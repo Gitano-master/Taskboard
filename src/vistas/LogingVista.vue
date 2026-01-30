@@ -13,7 +13,7 @@
 
 <script setup>
 import { ref} from 'vue';
-import { doLogin } from '@/services/autentication';
+import { doLogin, enviarEmailVerificacion } from '@/services/autentication';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 
@@ -26,38 +26,57 @@ const password = ref('')
 const login = async()=>{
     
     const response = await doLogin(email.value, password.value)
-    if(response.ok){
-        toast.success("La informacion correcta", {
-            position: "top-right",
-            timeout: 5000,
-            closeOnClick: true,
-            pauseOnFocusLoss: true,
-            pauseOnHover: true,
-            draggable: true,
-            draggablePercent: 0.6,
-            showCloseButtonOnHover: false,
-            hideProgressBar: true,
-            closeButton: "button",
-            icon: true,
-            rtl: false
-        })
+    const usuario = response?.user?.user
+    const respuestamail = enviarEmailVerificacion(usuario)
+    if(respuestamail){
+        if(response.ok){
+            toast.success("La informacion correcta", {
+                position: "top-right",
+                timeout: 5000,
+                closeOnClick: true,
+                pauseOnFocusLoss: true,
+                pauseOnHover: true,
+                draggable: true,
+                draggablePercent: 0.6,
+                showCloseButtonOnHover: false,
+                hideProgressBar: true,
+                closeButton: "button",
+                icon: true,
+                rtl: false
+            })
         router.push('/')
+        }else{
+            toast.error("No coinciden las constraseña", {
+                position: "top-right",
+                timeout: 5000,
+                closeOnClick: true,
+                pauseOnFocusLoss: true,
+                pauseOnHover: true,
+                draggable: true,
+                draggablePercent: 0.6,
+                showCloseButtonOnHover: false,
+                hideProgressBar: true,
+                closeButton: "button",
+                icon: true,
+                rtl: false})
+            }
     }else{
-        toast.error("No coinciden las constraseña", {
-            position: "top-right",
-            timeout: 5000,
-            closeOnClick: true,
-            pauseOnFocusLoss: true,
-            pauseOnHover: true,
-            draggable: true,
-            draggablePercent: 0.6,
-            showCloseButtonOnHover: false,
-            hideProgressBar: true,
-            closeButton: "button",
-            icon: true,
-            rtl: false})
-        }
+        toast.error("Debes verificar el", {
+                position: "top-right",
+                timeout: 5000,
+                closeOnClick: true,
+                pauseOnFocusLoss: true,
+                pauseOnHover: true,
+                draggable: true,
+                draggablePercent: 0.6,
+                showCloseButtonOnHover: false,
+                hideProgressBar: true,
+                closeButton: "button",
+                icon: true,
+                rtl: false})
     }
+    }
+    
 
 </script>
 

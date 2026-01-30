@@ -4,6 +4,7 @@ import RegisterVista from '@/vistas/RegisterVista.vue'
 import TareasVista from '@/vistas/TareasVista.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import { estaAuntenticado } from '@/services/autentication'
+import { enviarEmailVerificacion } from '@/services/autentication'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -18,8 +19,10 @@ const router = createRouter({
 router.beforeEach((to, from, next)=>{
   if(to.meta.requiresAuth){
     if((estaAuntenticado())){
-      // Si el email esta verificado next
-      next()
+      if(enviarEmailVerificacion){
+        next()
+      }
+      
     }else{
       next('/login')
     }

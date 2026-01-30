@@ -44,6 +44,7 @@ const registrar = async()=>{
             return
         }
     const response = await doRegister(email.value, password.value)
+    
     if(response.ok){
         await enviarEmailVerificacion(response.user.user)
         toast.success("La informacion correcta", {
