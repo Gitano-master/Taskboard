@@ -2,9 +2,9 @@
     <div>
         <h1>Bienvenido al Register</h1>
         <form @submit.prevent="registrar">
-            <input type="email"  id="email" v-model="email">
-            <input type="password" id="password" v-model="password">
-            <input type="password" id="Comprobarpassword" v-model="Comprobarpassword">
+            <input type="email"  id="email" v-model="email" placeholder="email">
+            <input type="password" id="password" v-model="password" placeholder="contraseña">
+            <input type="password" id="Comprobarpassword" v-model="Comprobarpassword" placeholder="contraseña">
             <button>Registrar</button>
         </form>
         <router-link to="/login">¿Estas logeado?</router-link>
@@ -24,7 +24,7 @@ const email = ref('')
 const password = ref('')
 const Comprobarpassword = ref('')
 const valido = computed(()=>{
-    Comprobarpassword.value ===password.value
+   return Comprobarpassword.value ===password.value
 })
 const registrar = async()=>{
     if(!valido.value){
@@ -41,6 +41,7 @@ const registrar = async()=>{
             closeButton: "button",
             icon: true,
             rtl: false})
+            return
         }
     const response = await doRegister(email.value, password.value)
     if(response.ok){
