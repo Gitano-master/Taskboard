@@ -63,20 +63,25 @@ const logOut = async () => {
 }
 
 //HOW TO USE:
-const sendEmail = async () => {
+export const enviarEmailVerificacion = async (usuarioActual = null) => {
   try {
-    if (user.value.emailVerified) {
+    const usuario = usuarioActual || auth.currentUser
+    if (usuario.emailVerified) {
+      console.log('email ya verificado')
       return {
-        mensaje: 'Usuario ya verificado',
+        ok: true,
+        mensaje: 'email ya verificado',
       }
     }
-    await sendEmailVerification(user.value)
+    await sendEmailVerification(usuario, { url: window.location.origin + '/perfil' })
     return {
-      mensaje: 'email enviado',
       ok: true,
+      mensaje: 'email de verificación enviado, verifique su email',
     }
   } catch (error) {
     console.log(error)
+
+    console.log('Ha habido un problema al enviar el correo de verificación')
   }
 }
 
@@ -87,4 +92,4 @@ export const ObtenerUsuario = ()=>{
   return user.value
 }
 
-export { doLogin, doRegister, logOut, sendEmail, user }
+export { doLogin, doRegister, logOut, user }

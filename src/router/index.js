@@ -3,20 +3,21 @@ import LogingVista from '@/vistas/LogingVista.vue'
 import RegisterVista from '@/vistas/RegisterVista.vue'
 import TareasVista from '@/vistas/TareasVista.vue'
 import { createRouter, createWebHistory } from 'vue-router'
+import { estaAuntenticado } from '@/services/autentication'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {path:"/", component:HomeVista, meta: {requiresAuth:true}},
-    {path:"/tareas", component:TareasVista, meta:{requiresAuth:true}},
-    {path:"login", component: LogingVista},
+    {path:"/tareas", component:TareasVista, meta: {requiresAuth:true}},
+    {path:"/login", component: LogingVista},
     {path:"/register", component:RegisterVista}
   ],
 })
 
 router.beforeEach((to, from, next)=>{
   if(to.meta.requiresAuth){
-    if(estaAutenticado()){
+    if((estaAuntenticado())){
       // Si el email esta verificado next
       next()
     }else{
@@ -24,7 +25,7 @@ router.beforeEach((to, from, next)=>{
     }
       
   }else{
-    next
+    next()
   }
 })
 export default router
