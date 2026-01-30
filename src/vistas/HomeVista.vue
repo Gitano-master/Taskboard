@@ -42,12 +42,12 @@ onMounted(async()=>{
     await tareas.getData()
 })
 
-const anadir_tarea = async (favorito) => {
+const anadir_tarea = async (Tareas) => {
   try {
-    console.log('Favorito a guardar:', favorito)
-    const response = await anadirFavoritos(favorito)
+    
+    const response = await anadirFavoritos(Tareas)
     if (response.ok) {
-      toast.success("Añadido a favoritos", {
+      toast.success("Añadido a Workspace", {
             position: "top-right",
             timeout: 5000,
             closeOnClick: true,
@@ -66,7 +66,7 @@ const anadir_tarea = async (favorito) => {
     }
     return
   } catch (error) {
-    toast.error("Error al añadir a favoritos", {
+    toast.error("Error al añadir a workspace", {
             position: "top-right",
             timeout: 5000,
             closeOnClick: true,

@@ -89,10 +89,10 @@ const anadirDoc = async (datos) => {
 }
 
 //Asi añado favoritos
-export const anadirFavoritos = async (favorito) => {
+export const anadirFavoritos = async (Tareas) => {
   const user = auth.currentUser
-  const favoritosRef = collection(db, 'usuarios', user.uid, 'tareas')
-  await addDoc(favoritosRef, favorito)
+  const favoritosRef = collection(db, 'usuarios', user.uid, 'Tareas')
+  await addDoc(favoritosRef, Tareas)
   return {
     ok: true,
   }
@@ -101,7 +101,7 @@ export const anadirFavoritos = async (favorito) => {
 export const obtenerFavoritos = async () => {
   const user = auth.currentUser
 
-  const favRef = collection(db, 'usuarios', user.uid, 'tareas')
+  const favRef = collection(db, 'usuarios', user.uid, 'Tareas')
   const snoopDog = await getDocs(favRef)
 
   const favoritos = snoopDog.docs.map(doc => ({
