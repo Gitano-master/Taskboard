@@ -1,7 +1,15 @@
 <template>
-    <button @click="cerrar_sesion">Cerrar Sesion</button>
+  <button @click="cerrar_sesion">Cerrar Sesion</button>
+  <div id="filtro">
+    <select v-model="filtro">
+      <option value="" selected disabled hidden>Selecciona una opción</option>
+      <option value="todas">Todas</option>
+      <option value="completadas">Completadas</option>
+      <option value="nocompletadas">No completadas</option>
+    </select>
+  </div>
   <div id="contenedor">
-    <div id="contenido" v-for="(i, index) in tareas.lista_tareas" :key="index">
+    <div id="contenido" v-for="(i, index) in filtrar" :key="index">
         <div id="datos">
             <p>Id:{{ i.id }}</p>
             <p>Tarea:{{ i.todo }}</p>
@@ -25,6 +33,8 @@ import { logOut } from '@/services/autentication';
 import { useRouter } from 'vue-router'
 import { anadirFavoritos } from '@/services/tareas';
 import { useToast } from 'vue-toastification';
+import { ref } from 'vue';
+import { computed } from 'vue';
 
 const toast = useToast()
 
@@ -81,6 +91,27 @@ const anadir_tarea = async (Tareas) => {
             rtl: false})
   }
 }
+
+const filtro = ref("")
+
+const filtrar = computed(()=>{
+  if(filtro.value === "todas"){
+
+    return tareas.lista_tareas
+
+  }
+  if(filtro.value ==="completadas"){
+
+    return tareas.lista_tareas.filter(i=> i.completed === true)
+
+  }
+  if(filtro.value ==="nocompletadas"){
+
+    return tareas.lista_tareas.filter(i=> i.completed === false)
+
+  }
+  return tareas.lista_tareas
+})
 
 </script>
 
