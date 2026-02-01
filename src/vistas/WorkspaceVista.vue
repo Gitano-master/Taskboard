@@ -69,11 +69,6 @@ const cerrar_sesion = async() =>{
   padding: 0
   box-sizing: border-box
 
-/* ===== Quitar estilos por defecto de router-link (<a>) ===== */
-a
-  text-decoration: none
-  color: inherit
-
 body
   overflow-x: hidden
   font-family: 'Arial', sans-serif
@@ -89,12 +84,16 @@ button
   border-radius: 5px
   cursor: pointer
   transition: background 0.3s
-  margin: 15px auto
-  display: block
+  margin: 10px 5px 10px 0   /* margen entre botones */
+  display: inline-block
+  outline: none              /* quita el morado al hacer focus */
 
   &:hover
     background: #0056b3
 
+  &:focus
+    outline: none            /* asegura que al tab/seleccionar no aparezca */
+    
 /* ===== Contenedor de tareas ===== */
 div[v-for]
   display: grid
@@ -111,7 +110,7 @@ div[v-for]
   background: #fff
   padding: 20px
   border-radius: 12px
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1)
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1)   /* sombra base */
   display: flex
   flex-direction: column
   justify-content: center
@@ -119,7 +118,7 @@ div[v-for]
   min-height: 180px
   text-align: center
   overflow: hidden
-  transition: transform 0.3s, box-shadow 0.3s
+  transition: transform 0.3s, box-shadow 0.3s  /* animación hover */
 
   p
     margin: 5px 0
@@ -128,8 +127,8 @@ div[v-for]
     line-height: 1.2
 
   &:hover
-    transform: translateY(-5px)
-    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15)
+    transform: translateY(-5px)                 /* levanta la tarjeta al pasar el mouse */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15) /* sombra más intensa al hover */
 
 /* ===== Media Queries Responsivas ===== */
 @media (max-width: 1200px)

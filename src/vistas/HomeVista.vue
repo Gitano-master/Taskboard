@@ -2,8 +2,7 @@
   <button @click="cerrar_sesion">Cerrar Sesion</button>
   <router-link to="/workspace">
     <button>Tareas</button>
-  </router-link>
-
+</router-link>
   
   <div id="filtro">
     <select v-model="filtro">
@@ -49,7 +48,6 @@ import { computed } from 'vue';
 import { watch } from 'vue';
 
 const toast = useToast()
-
 
 
 const router = useRouter()
@@ -151,8 +149,7 @@ button
   cursor: pointer
   transition: background 0.3s
   margin-bottom: 15px
-  margin-right: 10px
-
+  margin-right: 10px 
 
   &:hover
     background: #0056b3
@@ -230,6 +227,7 @@ button
   transition: background 0.3s
   flex-shrink: 0
   margin-top: 10px
+  margin-right: 15px
 
   &:hover
     background: #218838

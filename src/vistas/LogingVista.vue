@@ -1,83 +1,45 @@
 <template>
   <div>
-        <h1>Bienvenido al Login</h1>
-        <form @submit.prevent="login">
-            <input type="email"  id="email" v-model="email" placeholder="email">
-            <input type="password" id="password" v-model="password" placeholder="contraseña">
-            
-            <button>Enviar Datos</button>
-        </form>
-        <router-link to="/register">¿Estas registrado?</router-link>
-    </div>
+    <h1>Bienvenido al Login</h1>
+    <form @submit.prevent="login">
+      <input type="email" v-model="email" placeholder="email">
+      <input type="password" v-model="password" placeholder="contraseña">
+      <button>Enviar Datos</button>
+    </form>
+    <router-link to="/register">¿No estás registrado?</router-link>
+  </div>
 </template>
 
 <script setup>
-import { ref} from 'vue';
-import { doLogin, enviarEmailVerificacion } from '@/services/autentication';
-import { useRouter } from 'vue-router';
-import { useToast } from 'vue-toastification';
+import { ref } from 'vue'
+import { doLogin, enviarEmailVerificacion } from '@/services/autentication'
+import { useRouter } from 'vue-router'
+import { useToast } from 'vue-toastification'
 
 const router = useRouter()
-const  toast = useToast()
+const toast = useToast()
 const email = ref('')
 const password = ref('')
 
+const login = async () => {
+  const response = await doLogin(email.value, password.value)
+  const usuario = response?.user
 
-const login = async()=>{
-    
-    const response = await doLogin(email.value, password.value)
-    const usuario = response?.user?.user
-    const respuestamail = enviarEmailVerificacion(usuario)
-    if(respuestamail){
-        if(response.ok){
-            toast.success("La informacion correcta", {
-                position: "top-right",
-                timeout: 5000,
-                closeOnClick: true,
-                pauseOnFocusLoss: true,
-                pauseOnHover: true,
-                draggable: true,
-                draggablePercent: 0.6,
-                showCloseButtonOnHover: false,
-                hideProgressBar: true,
-                closeButton: "button",
-                icon: true,
-                rtl: false
-            })
-        router.push('/')
-        }else{
-            toast.error("No coinciden las constraseña", {
-                position: "top-right",
-                timeout: 5000,
-                closeOnClick: true,
-                pauseOnFocusLoss: true,
-                pauseOnHover: true,
-                draggable: true,
-                draggablePercent: 0.6,
-                showCloseButtonOnHover: false,
-                hideProgressBar: true,
-                closeButton: "button",
-                icon: true,
-                rtl: false})
-            }
-    }else{
-        toast.error("Debes verificar el", {
-                position: "top-right",
-                timeout: 5000,
-                closeOnClick: true,
-                pauseOnFocusLoss: true,
-                pauseOnHover: true,
-                draggable: true,
-                draggablePercent: 0.6,
-                showCloseButtonOnHover: false,
-                hideProgressBar: true,
-                closeButton: "button",
-                icon: true,
-                rtl: false})
-    }
-    }
-    
+  if (!response.ok) {
+    toast.error("Correo o contraseña incorrectos")
+    return
+  }
 
+  // Verificamos si el correo está confirmado
+  if (!usuario.emailVerified) {
+    await enviarEmailVerificacion(usuario)
+    toast.warning("Debes verificar tu correo antes de continuar. Revisa tu bandeja de entrada.")
+    return
+  }
+
+  toast.success("Bienvenido, correo verificado")
+  router.push("/")
+}
 </script>
 
 <style scoped lang="sass">
@@ -112,7 +74,6 @@ input
   border-radius: 5px
   font-size: 16px
   transition: border-color 0.3s
-
   &:focus
     outline: none
     border-color: #007bff
@@ -126,7 +87,6 @@ button
   border-radius: 5px
   cursor: pointer
   transition: background 0.3s
-
   &:hover
     background: #0056b3
 
@@ -135,14 +95,11 @@ router-link
   color: #007bff
   text-decoration: none
   transition: color 0.3s
-
   &:hover
     color: #0056b3
 
 @media (max-width: 480px)
   form
     padding: 20px
-
 </style>
-
 
